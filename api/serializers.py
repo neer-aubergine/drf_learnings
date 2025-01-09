@@ -18,3 +18,23 @@ class productSerializer(serializers.ModelSerializer):
         if value < 0:
             raise serializers.ValidationError('Price must be a positive number')
         return value
+    
+
+class orderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = (
+            'product',
+            'quantity',
+        )
+class orderSerializer(serializers.ModelSerializer):
+    items = orderItemSerializer(many=True , read_only=True)
+    class Meta:
+        model = Order
+        fields = (
+            'order_id',
+            'user',
+            'created_at',
+            'status',
+            'items'
+        )
